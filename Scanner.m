@@ -131,9 +131,22 @@
 {
 
   image = [[NSImage alloc] initWithSize: imageSize];
-  [image lockFocusFlipped: YES];
+//  [image lockFocusFlipped: YES];
+
+  [image lockFocus];
+  NSAffineTransform *atran;
+
+  [NSGraphicsContext saveGraphicsState];
+
+  // flip upside down
+  atran = [NSAffineTransform transform];
+  [atran translateXBy: 0 yBy: imageSize.height];
+  [atran scaleXBy: 1 yBy: -1];
+  [atran set];
 
   [bitmap drawInRect: NSMakeRect(0, 0, imageSize.width, imageSize.height) ];
+
+  [NSGraphicsContext restoreGraphicsState];
 
   [image unlockFocus];
 
@@ -169,15 +182,15 @@
     QTTrack *track;
     track = [tracks objectAtIndex: 0];
     @synchronized([Scanner class]) {
-      [ movie attachToCurrentThread ];
+//      [ movie attachToCurrentThread ];
       [ track addImage: image forDuration: duration withAttributes: attr];
-      [ movie detachFromCurrentThread ];
+//      [ movie detachFromCurrentThread ];
     }
   } else {  // 1st time to add an image.
     @synchronized([Scanner class]) {
-      [ movie attachToCurrentThread ];
+//      [ movie attachToCurrentThread ];
       [ movie addImage: image forDuration: duration withAttributes: attr];
-      [ movie detachFromCurrentThread ];
+//      [ movie detachFromCurrentThread ];
     }
   }
 

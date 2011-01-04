@@ -107,10 +107,16 @@
 - (void) stop
 {
 
+  [captureOutput recordToOutputFileURL: nil];
   [captureSession stopRunning];
   [captureDevice close];
-  [captureOutput recordToOutputFileURL: nil];
 
+}
+
+// for flushing the movie data
+- (void) setCaptureOutputDelegate: (NSObject *) delegate
+{
+  [captureOutput setDelegate: delegate];
 }
 
 @end

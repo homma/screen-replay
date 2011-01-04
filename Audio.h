@@ -19,6 +19,7 @@
 - (void) cleanUp;
 - (void) start;
 - (void) stop;
+- (void) setCaptureOutputDelegate: (NSObject *) delegate;
 
 @end
 

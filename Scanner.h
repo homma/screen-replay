@@ -1,6 +1,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
+#import <QTKit/QTKit.h>
 
 @interface Scanner : NSObject
 {

@@ -1,5 +1,6 @@
 
 #import <Quartz/Quartz.h>
+#import <QTKit/QTKit.h>
 
 @interface Video : NSObject
 {

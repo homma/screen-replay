@@ -52,12 +52,12 @@
   [video stop];
   [audio stop];
 
-  [self mergeAudioAndVideo];
-  [self save];
-
-  [audio cleanUp];
-  [video cleanUp];
-
+  // this code continues to the delegate method of
+  //   captureOutput:
+  //     didFinishRecordingToOutputFileAtURL:
+  //     forConnections:dueToError:
+  // which is at the bottom of this file
+  // for waiting audio capturing to be finished.
 }
 
 @end
@@ -71,6 +71,12 @@
 
   video = [[Video alloc] init];
   audio = [[Audio alloc] init];
+
+  // preparing for
+  //   captureOutput:
+  //     didFinishRecordingToOutputFileAtURL:
+  //     forConnections:dueToError:
+  [audio setCaptureOutputDelegate: self];
 }
 
 - (void) mergeAudioAndVideo
@@ -121,9 +127,14 @@
   NSString *pathTemp;
   NSString *path;
 
+/*
   movieDir = [NSSearchPathForDirectoriesInDomains(NSMoviesDirectory,
                 NSUserDomainMask, YES) objectAtIndex: 0];
   fileName = @"Screen Movie";
+*/
+
+  movieDir = NSHomeDirectory();
+  fileName = @"/Movies/Screen Movie";
   extension = @".mp4";
 
   pathTemp = [movieDir stringByAppendingPathComponent: fileName];
@@ -182,6 +193,18 @@
   [movie writeToFile: moviePath
          withAttributes: attr
          error: &err];
+
+}
+
+// the bottom half of the stop method.
+- (void)captureOutput:(QTCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL forConnections:(NSArray *)connections dueToError:(NSError *)error
+{
+
+  [self mergeAudioAndVideo];
+  [self save];
+
+  [audio cleanUp];
+  [video cleanUp];
 
 }
 
