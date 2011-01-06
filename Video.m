@@ -135,6 +135,7 @@ CVReturn displayCallback(
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     Scanner *scanner;
     scanner = [[Scanner alloc] initWithMovie: [video movie] ];
+    [scanner setDuration: diff];
     [scanner scan];
     [scanner release];
     [pool release];

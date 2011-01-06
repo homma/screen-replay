@@ -47,7 +47,6 @@
   scanRect = CGDisplayBounds( CGMainDisplayID() );
   w = scanRect.size.width;
   h = scanRect.size.height;
-  time = [NSDate timeIntervalSinceReferenceDate];
 
   [self createOpenGLContext];
   [self getScreenTexture];
@@ -157,17 +156,17 @@
 - (void) appendToMovie
 {
 
-  QTTime duration;
+  QTTime qtdur;  // QT duration
   NSDictionary *attr;
   double fps;
 
   fps = [Global sharedInstance]->fps;
-  duration = QTMakeTime(600 / fps, 600);
+  qtdur = QTMakeTime(600 * duration, 600);
   attr = NULL;
 
   attr = [NSDictionary dictionaryWithObjectsAndKeys:
             @"mp4v", QTAddImageCodecType,
-            [NSNumber numberWithInt: codecNormalQuality],
+            [NSNumber numberWithInt: codecLowQuality],
             QTAddImageCodecQuality, nil];
 
   // choice of quality: in QTKitDefines.h
@@ -183,19 +182,24 @@
     track = [tracks objectAtIndex: 0];
     @synchronized([Scanner class]) {
 //      [ movie attachToCurrentThread ];
-      [ track addImage: image forDuration: duration withAttributes: attr];
+      [ track addImage: image forDuration: qtdur withAttributes: attr];
 //      [ movie detachFromCurrentThread ];
     }
   } else {  // 1st time to add an image.
     @synchronized([Scanner class]) {
 //      [ movie attachToCurrentThread ];
-      [ movie addImage: image forDuration: duration withAttributes: attr];
+      [ movie addImage: image forDuration: qtdur withAttributes: attr];
 //      [ movie detachFromCurrentThread ];
     }
   }
 
   [image release];
 
+}
+
+- (void) setDuration: (NSTimeInterval) interval
+{
+  duration = interval;
 }
 
 @end

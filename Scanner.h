@@ -11,7 +11,7 @@
   NSBitmapImageRep *bitmap;
   NSSize imageSize;
   NSImage *image;
-  NSTimeInterval time;
+  NSTimeInterval duration;
   NSOpenGLContext *context;
   QTMovie *movie;
 
@@ -26,6 +26,7 @@
 - (void) getImageFromMemory;
 - (void) createImageFromBitmap;
 - (void) appendToMovie;
+- (void) setDuration: (NSTimeInterval) interval;
 
 @end
 
